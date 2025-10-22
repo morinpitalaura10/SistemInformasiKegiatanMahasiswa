@@ -14,43 +14,93 @@ export default function UserDashboard({ navigation }) {
   ];
 
   return (
-    <View style={[GlobalStyle.screen, { backgroundColor: '#FFFBE9' }]}>
-      {/* Header */}
+    <View style={[GlobalStyle.screen, { backgroundColor: '#F6FFF2' }]}>
+      {/* HEADER */}
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 25,
-          borderBottomWidth: 2,
-          borderColor: '#9DC08B',
-          paddingBottom: 10,
+          justifyContent: 'space-between',
+          backgroundColor: '#E8F3E8',
+          paddingVertical: 12,
+          paddingHorizontal: 15,
+          borderRadius: 15,
+          shadowColor: '#40513B',
+          shadowOpacity: 0.15,
+          shadowRadius: 4,
+          elevation: 3,
+          borderWidth: 1,
+          borderColor: '#C7D8C0',
+          marginBottom: 20,
         }}
       >
-        <Image
-          source={require('../../assets/dika.png')}
-          style={{ width: 50, height: 50, borderRadius: 25 }}
-        />
-        <Text style={[GlobalStyle.header, { color: '#40513B' }]}>User</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image
+            source={require('../../assets/dika.png')}
+            style={{
+              width: 55,
+              height: 55,
+              borderRadius: 28,
+              borderWidth: 2,
+              borderColor: '#9DC08B',
+              marginRight: 12,
+            }}
+          />
+          <View>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#40513B' }}>
+              Halo, Dika 🌿
+            </Text>
+            <Text style={{ color: '#5A6F4C', fontSize: 13 }}>
+              Selamat datang di SIMAK-UIN
+            </Text>
+          </View>
+        </View>
+
       </View>
 
-      {/* ScrollView supaya bisa digeser */}
-      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+      {/* DAFTAR KEGIATAN */}
+      <ScrollView contentContainerStyle={{ paddingBottom: 90 }}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: '600',
+            color: '#40513B',
+            marginBottom: 10,
+            textAlign: 'center',
+          }}
+        >
+          Kegiatan Kampus Terbaru 🎓
+        </Text>
+
         {cardData.map((item) => (
           <TouchableOpacity
             key={item.id}
-            style={GlobalStyle.card}
-            onPress={() =>
-              navigation.navigate('DetailKegiatan', { data: item })
-            }
+            style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: 15,
+              padding: 18,
+              marginBottom: 15,
+              marginHorizontal: 10,
+              borderWidth: 1,
+              borderColor: '#BFD8B8',
+              shadowColor: '#40513B',
+              shadowOpacity: 0.1,
+              shadowRadius: 3,
+              elevation: 2,
+            }}
+            onPress={() => navigation.navigate('DetailKegiatan', { data: item })}
           >
-            <Text style={GlobalStyle.cardTitle}>{item.title}</Text>
-            <Text style={GlobalStyle.cardText}>{item.desc}</Text>
+            <Text style={{ fontWeight: 'bold', color: '#40513B', fontSize: 16 }}>
+              {item.title}
+            </Text>
+            <Text style={{ color: '#555', fontSize: 13, marginTop: 4 }}>
+              {item.desc}
+            </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
 
-      {/* Footer Navigasi */}
+      {/* NAVIGASI BAWAH */}
       <View
         style={{
           position: 'absolute',

@@ -1,108 +1,94 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import GlobalStyle from '../styles/GlobalStyle';
 import { Ionicons } from '@expo/vector-icons';
+import { AuthContext } from '../context/AuthContext';
 
-export default function AdminOrmawaCRUD({ navigation }) {
+export default function AdminOrmawaCRUD({ navigation, route }) {
+  const { logout } = useContext(AuthContext);
+  const [ormawa, setOrmawa] = useState(
+    route?.params?.ormawa || [
+      { id: 1, nama: 'BEM UIN', deskripsi: 'Badan Eksekutif Mahasiswa Universitas' },
+      { id: 2, nama: 'DEMA Fakultas', deskripsi: 'Dewan Eksekutif Mahasiswa Fakultas' },
+    ]
+  );
+
+  const handleDelete = (id) => {
+    Alert.alert('Hapus Data', 'Yakin mau hapus organisasi ini?', [
+      { text: 'Batal', style: 'cancel' },
+      {
+        text: 'Hapus',
+        onPress: () => {
+          const updated = ormawa.filter((item) => item.id !== id);
+          setOrmawa(updated);
+          Alert.alert('Berhasil', 'Data Ormawa dihapus 💚');
+        },
+      },
+    ]);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigation.reset({ index: 0, routes: [{ name: 'PublicHome' }] });
+  };
+
   return (
-    <View style={[GlobalStyle.screen, { backgroundColor: '#FFFCEE' }]}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Header */}
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 25,
-            borderBottomWidth: 2,
-            borderColor: '#9DC08B',
-            paddingBottom: 10,
-          }}
+    <View style={GlobalStyle.screen}>
+      <Text style={[GlobalStyle.header, { marginBottom: 20 }]}>Kelola Ormawa</Text>
+
+      <ScrollView style={{ marginBottom: 80 }}>
+        {ormawa.map((item) => (
+          <View key={item.id} style={[GlobalStyle.card, { marginBottom: 15 }]}>
+            <Text style={GlobalStyle.cardTitle}>{item.nama}</Text>
+            <Text>{item.deskripsi}</Text>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('UpdateOrmawa', { item, ormawa, setOrmawa })}
+              >
+                <Text style={{ color: '#40513B', fontWeight: 'bold' }}>✏️ Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleDelete(item.id)}>
+                <Text style={{ color: 'red', fontWeight: 'bold' }}>🗑️ Hapus</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))}
+
+        <TouchableOpacity
+          style={[GlobalStyle.button, { marginVertical: 25 }]}
+          onPress={() => navigation.navigate('TambahOrmawa', { ormawa, setOrmawa })}
         >
-          <Image
-            source={require('../../assets/icon.png')}
-            style={{ width: 50, height: 50, borderRadius: 25 }}
-          />
-          <Text style={[GlobalStyle.header, { color: '#40513B' }]}>
-            CRUD ORMAWA
-          </Text>
-        </View>
-
-        {/* Card Section */}
-        <View style={{ gap: 15 }}>
-          <TouchableOpacity style={GlobalStyle.card}>
-            <Text style={GlobalStyle.cardTitle}>Tambah Data ORMAWA</Text>
-            <Text style={GlobalStyle.cardText}>
-              Tambahkan organisasi mahasiswa baru ke sistem
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={GlobalStyle.card}>
-            <Text style={GlobalStyle.cardTitle}>Lihat Data</Text>
-            <Text style={GlobalStyle.cardText}>
-              Tampilkan seluruh data organisasi mahasiswa aktif
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={GlobalStyle.card}>
-            <Text style={GlobalStyle.cardTitle}>Update Data</Text>
-            <Text style={GlobalStyle.cardText}>
-              Edit informasi organisasi yang sudah terdaftar
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={GlobalStyle.card}>
-            <Text style={GlobalStyle.cardTitle}>Hapus Data</Text>
-            <Text style={GlobalStyle.cardText}>
-              Hapus data ORMAWA yang tidak aktif
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={GlobalStyle.card}>
-            <Text style={GlobalStyle.cardTitle}>Cari Data</Text>
-            <Text style={GlobalStyle.cardText}>
-              Temukan ORMAWA berdasarkan nama atau bidangnya
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={GlobalStyle.card}>
-            <Text style={GlobalStyle.cardTitle}>Export Data</Text>
-            <Text style={GlobalStyle.cardText}>
-              Simpan data ORMAWA ke format Excel atau PDF
-            </Text>
-          </TouchableOpacity>
-        </View>
+          <Text style={GlobalStyle.buttonText}>+ Tambah Ormawa</Text>
+        </TouchableOpacity>
       </ScrollView>
 
-      {/* Tombol Home */}
+      {/* Footer Navigasi */}
       <View
         style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          backgroundColor: '#E8F3E8',
+          borderTopWidth: 1,
+          borderTopColor: '#C7D2C5',
+          paddingVertical: 10,
           position: 'absolute',
-          bottom: 20,
-          alignSelf: 'center',
+          bottom: 0,
+          left: 0,
+          right: 0,
         }}
       >
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AdminDashboard')}
-          style={{
-            backgroundColor: '#9DC08B',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 8,
-            paddingVertical: 10,
-            paddingHorizontal: 25,
-            borderRadius: 25,
-            shadowColor: '#000',
-            shadowOpacity: 0.1,
-            shadowOffset: { width: 0, height: 2 },
-            shadowRadius: 3,
-            elevation: 3,
-          }}
-        >
-          <Ionicons name="home-outline" size={22} color="#fff" />
-          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
-            Home
-          </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('AdminDashboard')}>
+          <Ionicons name="home-outline" size={26} color="#40513B" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Ionicons name="person-circle-outline" size={26} color="#40513B" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleLogout}>
+          <Ionicons name="log-out-outline" size={26} color="#40513B" />
         </TouchableOpacity>
       </View>
     </View>

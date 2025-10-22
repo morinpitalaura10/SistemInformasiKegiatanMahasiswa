@@ -1,21 +1,18 @@
 import React, { useContext } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import GlobalStyle from '../styles/GlobalStyle';
 import { AuthContext } from '../context/AuthContext';
 
 export default function ProfileUser({ navigation }) {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
-  // Data user dummy (nanti bisa diganti dari database/login)
-  const userData = {
-    namaLengkap: 'Dika Hasan',
-    namaPanggilan: 'Hasan',
-    nim: '2388010033',
-    jurusan: 'Informatika',
-    ttl: 'Cirebon, 18 Agustus 2005',
-    role: 'Mahasiswa',
-    foto: require('../../assets/dika.png'), // pastiin ada gambarnya di folder assets
+  const handleLogout = () => {
+    logout();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'SIMAK-UIN' }],
+    });
   };
 
   return (
@@ -26,77 +23,108 @@ export default function ProfileUser({ navigation }) {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: 20,
-          borderBottomWidth: 2,
-          borderColor: '#9DC08B',
-          paddingBottom: 10,
+          backgroundColor: '#E8F3E8',
+          paddingVertical: 15,
+          borderRadius: 12,
+          borderWidth: 1,
+          borderColor: '#BFD8B8',
+          marginBottom: 25,
+          shadowColor: '#40513B',
+          shadowOpacity: 0.15,
+          shadowRadius: 3,
+          elevation: 3,
         }}
       >
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#40513B' }}>
-          Profile Mahasiswa
-        </Text>
+        <Ionicons name="person-circle-outline" size={26} color="#40513B" style={{ marginRight: 8 }} />
+        <Text style={[GlobalStyle.header, { color: '#40513B' }]}>Profil Pengguna</Text>
       </View>
 
-      {/* Isi */}
-      <View style={{ alignItems: 'center', marginBottom: 20 }}>
+      {/* Konten Utama */}
+      <View
+        style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: 20,
+          borderWidth: 1.5,
+          borderColor: '#C7D2C3',
+          padding: 20,
+          alignItems: 'center',
+          marginHorizontal: 10,
+          shadowColor: '#000',
+          shadowOpacity: 0.08,
+          shadowRadius: 5,
+          elevation: 3,
+        }}
+      >
+        {/* Foto Profil */}
         <Image
-          source={userData.foto}
+          source={require('../../assets/dika.png')}
           style={{
-            width: 120,
-            height: 120,
-            borderRadius: 60,
-            borderWidth: 3,
-            borderColor: '#9DC08B',
+            width: 110,
+            height: 110,
+            borderRadius: 55,
             marginBottom: 15,
+            borderWidth: 2.5,
+            borderColor: '#9DC08B',
           }}
         />
-        <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#40513B' }}>
-          {userData.namaLengkap}
+
+        {/* Nama User */}
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '700',
+            color: '#40513B',
+            marginBottom: 3,
+          }}
+        >
+          {user?.name || 'Mahasiswa UIN'}
         </Text>
-        <Text style={{ fontSize: 16, color: '#61876E' }}>
-          ({userData.namaPanggilan})
+
+        {/* Role */}
+        <Text
+          style={{
+            color: '#6B7280',
+            fontSize: 14,
+            fontStyle: 'italic',
+            marginBottom: 15,
+          }}
+        >
+          {user?.role === 'user' ? 'Mahasiswa Aktif' : 'User Mahasiswa'}
         </Text>
-      </View>
 
-      {/* Data Identitas */}
-      <View
-        style={{
-          backgroundColor: '#E8F3E8',
-          padding: 20,
-          borderRadius: 20,
-          marginHorizontal: 20,
-          shadowColor: '#000',
-          shadowOpacity: 0.1,
-          shadowRadius: 3,
-          elevation: 2,
-        }}
-      >
-        <View style={{ marginBottom: 10 }}>
-          <Text style={{ fontWeight: 'bold', color: '#40513B' }}>NIM</Text>
-          <Text style={{ color: '#61876E' }}>{userData.nim}</Text>
-        </View>
-
-        <View style={{ marginBottom: 10 }}>
-          <Text style={{ fontWeight: 'bold', color: '#40513B' }}>Jurusan</Text>
-          <Text style={{ color: '#61876E' }}>{userData.jurusan}</Text>
-        </View>
-
-        <View style={{ marginBottom: 10 }}>
-          <Text style={{ fontWeight: 'bold', color: '#40513B' }}>
-            Tempat, Tanggal Lahir
+        {/* Info Akun */}
+        <View
+          style={{
+            width: '100%',
+            backgroundColor: '#F9FFF6',
+            borderRadius: 15,
+            borderWidth: 1,
+            borderColor: '#C7D8C0',
+            padding: 15,
+          }}
+        >
+          <Text style={{ fontSize: 15, color: '#40513B', marginBottom: 6 }}>
+            📧 <Text style={{ fontWeight: '600' }}>Username:</Text>{' '}
+            {user?.username || 'Dika Hasan'}
           </Text>
-          <Text style={{ color: '#61876E' }}>{userData.ttl}</Text>
-        </View>
-
-        <View>
-          <Text style={{ fontWeight: 'bold', color: '#40513B' }}>Role</Text>
-          <Text style={{ color: '#61876E' }}>{userData.role}</Text>
+          <Text style={{ fontSize: 15, color: '#40513B', marginBottom: 6 }}>
+            🏫 <Text style={{ fontWeight: '600' }}>Fakultas:</Text> Sains dan Teknologi
+          </Text>
+          <Text style={{ fontSize: 15, color: '#40513B' }}>
+            🎓 <Text style={{ fontWeight: '600' }}>Program Studi:</Text> Informatika
+          </Text>
         </View>
       </View>
 
-      {/* Footer Navigasi */}
+      
+
+      {/* Bottom Navigation */}
       <View
         style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
           flexDirection: 'row',
           justifyContent: 'space-around',
           alignItems: 'center',
@@ -104,29 +132,17 @@ export default function ProfileUser({ navigation }) {
           borderTopWidth: 1,
           borderTopColor: '#C7D2C5',
           paddingVertical: 10,
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
         }}
       >
-        {/* HOME */}
         <TouchableOpacity onPress={() => navigation.navigate('UserDashboard')}>
           <Ionicons name="home-outline" size={26} color="#40513B" />
         </TouchableOpacity>
 
-        {/* PROFILE */}
-        <TouchableOpacity onPress={() => navigation.navigate('ProfileUser')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Ionicons name="person-circle-outline" size={26} color="#40513B" />
         </TouchableOpacity>
 
-        {/* LOGOUT */}
-        <TouchableOpacity
-          onPress={() => {
-            logout();
-            navigation.replace('Login');
-          }}
-        >
+        <TouchableOpacity onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={26} color="#40513B" />
         </TouchableOpacity>
       </View>

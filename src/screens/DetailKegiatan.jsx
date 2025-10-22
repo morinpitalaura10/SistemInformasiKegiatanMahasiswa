@@ -16,61 +16,66 @@ export default function DetailKegiatan({ route, navigation }) {
   ];
 
   return (
-    <View style={[GlobalStyle.screen, { backgroundColor: '#FEFFF0' }]}>
+    <View style={[GlobalStyle.screen, { backgroundColor: '#F6FFF2', paddingHorizontal: 20 }]}>
       {/* Header */}
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 20,
+          marginBottom: 25,
           borderBottomWidth: 2,
           borderColor: '#9DC08B',
           paddingBottom: 10,
         }}
       >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={28} color="#40513B" />
+          <Ionicons name="arrow-back-outline" size={28} color="#40513B" />
         </TouchableOpacity>
-        <Text style={[GlobalStyle.header, { color: '#40513B', fontSize: 20 }]}>
-          Detail
-        </Text>
-        <View style={{ width: 28 }} /> {/* Spacer biar rata tengah */}
+        <Text style={[GlobalStyle.header, { color: '#40513B', fontSize: 20 }]}>Detail Kegiatan</Text>
+        <View style={{ width: 28 }} />
       </View>
 
-      {/* Detail content */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: 25 }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40513B' }}>
+      {/* Content */}
+      <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 70 }}>
+        <View style={{ marginBottom: 20 }}>
+          <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#40513B' }}>
             {data?.title || 'Judul Kegiatan'}
           </Text>
-          <Text style={{ color: '#555', marginTop: 4 }}>
+          <Text style={{ color: '#555', marginTop: 4, fontSize: 14 }}>
             {data?.desc || 'Deskripsi kegiatan ini.'}
           </Text>
         </View>
 
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
+        {/* Card Detail */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
           {detailList.map((item) => (
             <View
               key={item.id}
               style={{
-                width: '47%',
-                backgroundColor: '#E9F5E9',
-                padding: 10,
-                borderRadius: 10,
-                marginBottom: 10,
+                width: '48%',
+                backgroundColor: '#FFFFFF',
+                borderWidth: 1.5,
+                borderColor: '#CDE6C0',
+                borderRadius: 12,
+                padding: 12,
+                marginBottom: 12,
+                shadowColor: '#000',
+                shadowOpacity: 0.05,
+                shadowRadius: 2,
+                elevation: 2,
               }}
             >
-              <Text style={{ fontWeight: 'bold', color: '#40513B' }}>
+              <Text style={{ fontWeight: 'bold', color: '#40513B', fontSize: 15 }}>
                 {item.title}
               </Text>
-              <Text style={{ color: '#333' }}>{item.info}</Text>
+              <Text style={{ color: '#333', fontSize: 13, marginTop: 3 }}>{item.info}</Text>
             </View>
           ))}
         </View>
       </ScrollView>
 
-      {/* Footer navigasi manual */}
+      {/* Footer Navigasi */}
       <View
         style={{
           position: 'absolute',
