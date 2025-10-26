@@ -169,7 +169,7 @@ export default function AdminKegiatanCRUD({ navigation, route }) {
         }}
       >
         <TouchableOpacity onPress={() => navigation.navigate('AdminDashboard')}>
-          <Ionicons name="home-outline" size={26} color="#40513B" />
+          <Ionicons name="arrow-back" size={26} color="#40513B" />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>

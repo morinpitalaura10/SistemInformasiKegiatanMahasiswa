@@ -92,7 +92,7 @@ export default function DetailKegiatan({ route, navigation }) {
         }}
       >
         <TouchableOpacity onPress={() => navigation.navigate('UserDashboard')}>
-          <Ionicons name="home-outline" size={26} color="#40513B" />
+          <Ionicons name="arrow-back" size={26} color="#40513B" />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
